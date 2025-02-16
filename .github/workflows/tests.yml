@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - feature/filter-email
   pull_request:
 jobs:
   lint:
