@@ -15,7 +15,7 @@ import {
 import { registerSpinnerAutostopping } from '../../utils/register-spinner-autostopping';
 import { tree } from '../utils';
 
-const getEmailTemplatesFromDirectory = (emailDirectory: EmailsDirectory) => {
+const getEmailTemplatesFromDirectory = (emailDirectory: EmailsDirectory, filter?: string) => {
   const templatePaths = [] as string[];
   emailDirectory.emailFilenames.forEach((filename) =>
     templatePaths.push(path.join(emailDirectory.absolutePath, filename)),
@@ -23,6 +23,10 @@ const getEmailTemplatesFromDirectory = (emailDirectory: EmailsDirectory) => {
   emailDirectory.subDirectories.forEach((directory) => {
     templatePaths.push(...getEmailTemplatesFromDirectory(directory));
   });
+
+  if (filter) {
+    return templatePaths.filter(path => path.includes(filter))
+  }
 
   return templatePaths;
 };
@@ -40,6 +44,7 @@ export const exportTemplates = async (
   pathToWhereEmailMarkupShouldBeDumped: string,
   emailsDirectoryPath: string,
   options: ExportTemplatesOptions,
+  filter?: string,
 ) => {
   /* Delete the out directory if it already exists */
   if (fs.existsSync(pathToWhereEmailMarkupShouldBeDumped)) {
@@ -67,7 +72,7 @@ export const exportTemplates = async (
     return;
   }
 
-  const allTemplates = getEmailTemplatesFromDirectory(emailsDirectoryMetadata);
+  const allTemplates = getEmailTemplatesFromDirectory(emailsDirectoryMetadata, filter);
 
   try {
     await build({

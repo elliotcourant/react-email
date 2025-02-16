@@ -43,13 +43,14 @@ program
   .option('-p, --pretty', 'Pretty print the output', false)
   .option('-t, --plainText', 'Set output format as plain text', false)
   .option('-d, --dir <path>', 'Directory with your email templates', './emails')
+  .option('-f, --filter <filter>', 'Filter name of templates to render')
   .option(
     '-s, --silent',
     'To, or not to show a spinner with process information',
     false,
   )
-  .action(({ outDir, pretty, plainText, silent, dir: srcDir }) =>
-    exportTemplates(outDir, srcDir, { pretty, silent, plainText }),
+  .action(({ outDir, pretty, plainText, silent, dir: srcDir, filter }) =>
+    exportTemplates(outDir, srcDir, { pretty, silent, plainText }, filter),
   );
 
 program.parse();
