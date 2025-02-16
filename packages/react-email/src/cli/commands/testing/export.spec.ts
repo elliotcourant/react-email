@@ -29,7 +29,10 @@ test('email export with filter', async () => {
   );
   const pathToDumpMarkup = path.resolve(__dirname, './out');
   // Clean directory before we export again
-  fs.rmdirSync(pathToDumpMarkup);
+  fs.rmSync(pathToDumpMarkup, {
+    recursive: true,
+    force: true,
+  });
   await exportTemplates(pathToDumpMarkup, pathToEmailsDirectory, {
     pretty: true,
     silent: true,
